@@ -23,4 +23,17 @@ Then set the project name in `backend/pyproject.toml` and the page title in `fro
 | `mise run check` | read-only QA for both: format-check, lint, typecheck, test |
 | `mise run backend:fix` / `frontend:fix` | QA that rewrites files |
 
-The frontend dev server forwards `/api/*` to Django. Stack conventions live in `backend/CLAUDE.md` and `frontend/CLAUDE.md`.
+The frontend dev server forwards `/api/*` to Django.
+
+## Production build
+
+```sh
+(cd frontend && bun run build)   # static SPA in frontend/dist/
+```
+
+`frontend/dist/` is plain static files, so any static host works (nginx, Caddy, S3, Netlify, ...). On the host:
+
+- Serve `index.html` for any path that isn't a file, so client-side routes survive a reload.
+- Route `/api/` and `/admin/` to Django on the same origin. The `/api` forwarding only exists in the dev server.
+
+Asset URLs are absolute, so the app must live at the domain root; to host it under a subpath, change `publicPath` in `frontend/build.ts`. `BUN_PUBLIC_*` env vars are baked in at build time.
