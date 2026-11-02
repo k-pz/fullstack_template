@@ -121,7 +121,7 @@ Default to using Bun instead of Node.js.
 ## Frontend stack
 
 - React 19 + TypeScript, served by `Bun.serve()` with HTML imports. `src/index.html` loads `src/frontend.tsx`, which renders `App` from `src/App.tsx`.
-- `src/index.ts` serves the SPA for every route and forwards `/api/*` to Django on `localhost:8000`. Call the API with `fetch("/api/...")`, not the full Django URL. Don't add API routes or database access (`bun:sqlite`, `Bun.sql`, `Bun.redis`) to the Bun server; build endpoints in Django.
+- `src/index.ts` serves the SPA for every route and forwards `/api/*` to Django on `localhost:8000`. Call the API with the axios instance in `@/lib/api` (`api.get("/items/")` hits `/api/items/`), not `fetch` or the full Django URL. Don't add API routes or database access (`bun:sqlite`, `Bun.sql`, `Bun.redis`) to the Bun server; build endpoints in Django.
 - Tailwind CSS v4 via `bun-plugin-tailwind` (configured in `bunfig.toml`). There is no `tailwind.config.js`; theme tokens and dark mode live in `styles/globals.css`. Use the theme tokens (`bg-background`, `text-muted-foreground`, ...) instead of raw colors.
 - shadcn/ui (new-york style, lucide icons) in `src/components/ui/`. Use the existing components (`Button`, `Card`, `Input`, `Label`, `Select`, `Textarea`) before writing new ones. Add more with `bunx shadcn@latest add <component>`; don't write them by hand.
 - Merge class names with `cn()` from `@/lib/utils`.
@@ -138,6 +138,7 @@ src/frontend.tsx      React root
 src/App.tsx           top-level component
 src/components/ui/    shadcn/ui components
 src/lib/utils.ts      cn()
+src/lib/api.ts        axios instance for /api/*
 styles/globals.css    Tailwind + shadcn theme
 tests/                bun tests; setup.ts registers happy-dom
 ```
