@@ -14,6 +14,11 @@ const result = await Bun.build({
   minify: true,
   target: "browser",
   sourcemap: "linked",
+  // Absolute asset URLs, so deep links served by the host's index.html fallback still load assets.
+  // shortcut: assumes the app is hosted at the domain root; set this to the subpath for e.g. GitHub Pages project sites.
+  publicPath: "/",
+  // Match the dev server (bunfig.toml): inline BUN_PUBLIC_* env vars, leave everything else out.
+  env: "BUN_PUBLIC_*",
   define: {
     "process.env.NODE_ENV": JSON.stringify("production"),
   },
