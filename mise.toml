@@ -1,0 +1,43 @@
+# python is managed by uv via backend/.python-version
+[tools]
+bun = "1.4.4"
+uv = "0.12.18"
+
+# dependencies run in parallel, so this starts both servers
+[tasks.dev]
+depends = ["backend:dev", "frontend:dev"]
+
+[tasks.check]
+run = [{ task = "backend:check" }, { task = "frontend:check" }]
+
+# --- backend ---
+
+[tasks."backend:dev"]
+dir = "backend"
+run = "uv run python manage.py runserver"
+
+[tasks."backend:check"]
+description = "Read-only QA: format-check, lint, typecheck, test"
+dir = "backend"
+run = "uv run poe check"
+
+[tasks."backend:fix"]
+description = "QA that rewrites files: format, lint-fix, typecheck, test"
+dir = "backend"
+run = "uv run poe all"
+
+# --- frontend ---
+
+[tasks."frontend:dev"]
+dir = "frontend"
+run = "bun run dev"
+
+[tasks."frontend:check"]
+description = "Read-only QA: format-check, lint, typecheck, test"
+dir = "frontend"
+run = "bun run verify"
+
+[tasks."frontend:fix"]
+description = "QA that rewrites files: format, lint-fix, typecheck, test"
+dir = "frontend"
+run = "bun run all"

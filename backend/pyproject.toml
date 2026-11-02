@@ -1,0 +1,65 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Krzysztof Piekarczyk-Zapała", email = "kpz.priv@gmail.com" }
+]
+requires-python = ">=3.14.8"
+dependencies = [
+    "django>=6.1.2",
+    "django-cors-headers>=4.9.0",
+    "djangorestframework>=3.18.3",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.18,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "django-types>=0.24.0",
+    "poethepoet>=0.49.0",
+    "pytest>=9.2.0",
+    "pytest-django>=4.14.0",
+    "ruff>=0.17.3",
+    "ty>=0.0.95",
+]
+
+[tool.ruff]
+line-length = 120
+extend-exclude = ["src/*/migrations"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",  # pycodestyle
+    "F",       # pyflakes
+    "I",       # isort
+    "UP",      # pyupgrade
+    "B",       # bugbear
+    "C4",      # comprehensions
+    "SIM",     # simplify
+    "DJ",      # django
+    "RUF",     # ruff-specific
+]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.poe.tasks]
+lint = "ruff check"
+lint-fix = "ruff check --fix"
+typecheck = "ty check"
+format = "ruff format"
+format-check = "ruff format --check"
+test = "pytest"
+all = ["format", "lint-fix", "typecheck", "test"]
+check = ["format-check", "lint", "typecheck", "test"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "backend.settings"
+testpaths = ["tests"]
+
+[tool.ty.terminal]
+error-on-warning = true

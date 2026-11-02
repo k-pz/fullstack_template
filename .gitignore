@@ -1,0 +1,28 @@
+# Repo-wide ignores only. Stack-specific rules live in backend/.gitignore and frontend/.gitignore.
+
+# OS
+.DS_Store
+._*
+*.icloud
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+*.swp
+*~
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# Claude Code personal settings
+.claude/settings.local.json
+CLAUDE.local.md

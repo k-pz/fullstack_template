@@ -1,0 +1,13 @@
+[serve.static]
+plugins = ["bun-plugin-tailwind"]
+env = "BUN_PUBLIC_*"
+
+[test]
+preload = ["./tests/setup.ts"]
+
+[lint]
+# typeAware = true   # also run the rules that need types
+
+[lint.rules]
+# "no-console" = "warn"
+# "eqeqeq" = ["error", "smart"]
